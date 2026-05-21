@@ -1,0 +1,421 @@
+<!-- views/student/dashboard.ejs -->
+
+<div class="container-fluid py-4">
+
+  <!-- HEADER -->
+  <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+
+    <div>
+      <h2 class="fw-bold mb-2">
+        <i class="fa-solid fa-user-graduate text-primary me-2"></i>
+        Student Dashboard
+      </h2>
+
+      <p class="text-muted mb-0">
+        Welcome back,
+        <strong><%= student.name %></strong> 👋
+      </p>
+    </div>
+
+    <div>
+      <span class="badge bg-primary-subtle text-primary px-3 py-2 rounded-pill">
+        <i class="fa-solid fa-book-open me-1"></i>
+        <%= student.course_name || 'No Course Assigned' %>
+      </span>
+    </div>
+
+  </div>
+
+  <!-- MAIN GRID -->
+  <div class="row g-4">
+
+    <!-- LEFT SIDEBAR -->
+    <div class="col-lg-4">
+
+      <!-- PROFILE CARD -->
+      <div class="card border-0 shadow-sm rounded-4 mb-4">
+
+        <div class="card-body p-4">
+
+          <div class="text-center mb-4">
+
+            <div
+              class="mx-auto d-flex align-items-center justify-content-center rounded-circle bg-primary bg-opacity-10"
+              style="width: 90px; height: 90px;"
+            >
+              <i class="fa-solid fa-user fa-2x text-primary"></i>
+            </div>
+
+            <h4 class="fw-bold mt-3 mb-1">
+              <%= student.name %>
+            </h4>
+
+            <p class="text-muted mb-0">
+              Student Portal Access
+            </p>
+
+          </div>
+
+          <div class="table-responsive">
+
+            <table class="table align-middle mb-0">
+
+              <tbody>
+
+                <tr>
+                  <th class="text-muted border-0">Email</th>
+                  <td class="border-0">
+                    <%= student.email %>
+                  </td>
+                </tr>
+
+                <tr>
+                  <th class="text-muted border-0">Phone</th>
+                  <td class="border-0">
+                    <%= student.phone || 'N/A' %>
+                  </td>
+                </tr>
+
+                <tr>
+                  <th class="text-muted border-0">DOB</th>
+                  <td class="border-0">
+                    <%= student.dob || 'N/A' %>
+                  </td>
+                </tr>
+
+                <tr>
+                  <th class="text-muted border-0">Gender</th>
+                  <td class="border-0">
+                    <span class="badge bg-secondary-subtle text-secondary">
+                      <%= student.gender || 'N/A' %>
+                    </span>
+                  </td>
+                </tr>
+
+                <tr>
+                  <th class="text-muted border-0">Course</th>
+                  <td class="border-0">
+
+                    <% if (student.course_name) { %>
+
+                      <span class="badge bg-primary">
+                        <%= student.course_name %>
+                      </span>
+
+                    <% } else { %>
+
+                      <span class="text-muted">
+                        Not Assigned
+                      </span>
+
+                    <% } %>
+
+                  </td>
+                </tr>
+
+              </tbody>
+
+            </table>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- ATTENDANCE CARD -->
+      <div class="card border-0 shadow-sm rounded-4">
+
+        <div class="card-body p-4 text-center">
+
+          <h5 class="fw-bold mb-4">
+            <i class="fa-solid fa-calendar-check text-warning me-2"></i>
+            Attendance Overview
+          </h5>
+
+          <%
+            let progressColor = '#22c55e';
+
+            if (attendancePercent < 75) {
+              progressColor = '#f59e0b';
+            }
+
+            if (attendancePercent < 50) {
+              progressColor = '#ef4444';
+            }
+
+            const offset = 440 - (440 * attendancePercent) / 100;
+          %>
+
+          <div
+            style="position: relative; width: 180px; height: 180px; margin: auto;"
+          >
+
+            <svg width="180" height="180">
+
+              <circle
+                cx="90"
+                cy="90"
+                r="70"
+                stroke="#e5e7eb"
+                stroke-width="12"
+                fill="none"
+              ></circle>
+
+              <circle
+                cx="90"
+                cy="90"
+                r="70"
+                stroke="<%= progressColor %>"
+                stroke-width="12"
+                fill="none"
+                stroke-linecap="round"
+                stroke-dasharray="440"
+                stroke-dashoffset="<%= offset %>"
+                transform="rotate(-90 90 90)"
+              ></circle>
+
+            </svg>
+
+            <div
+              class="position-absolute top-50 start-50 translate-middle"
+            >
+
+              <h2
+                class="fw-bold mb-0"
+                style="color: <%= progressColor %>;"
+              >
+                <%= attendancePercent %>%
+              </h2>
+
+              <small class="text-muted">
+                Attendance
+              </small>
+
+            </div>
+
+          </div>
+
+          <p class="text-muted mt-4 mb-0">
+            Total Recorded Classes:
+            <strong>
+              <%= attendanceRecordsCount %>
+            </strong>
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- RIGHT CONTENT -->
+    <div class="col-lg-8">
+
+      <div class="card border-0 shadow-sm rounded-4">
+
+        <div class="card-body p-4">
+
+          <div class="d-flex justify-content-between align-items-center mb-4">
+
+            <div>
+
+              <h4 class="fw-bold mb-1">
+                <i class="fa-solid fa-chart-column text-success me-2"></i>
+                Academic Performance
+              </h4>
+
+              <p class="text-muted mb-0">
+                Subject-wise marks and grades
+              </p>
+
+            </div>
+
+          </div>
+
+          <% if (academicRecords.length === 0) { %>
+
+            <div class="text-center py-5">
+
+              <i class="fa-solid fa-book-open fa-4x text-muted mb-4"></i>
+
+              <h5 class="fw-bold">
+                No Academic Records Found
+              </h5>
+
+              <p class="text-muted">
+                Subjects and marks will appear here once added by teachers.
+              </p>
+
+            </div>
+
+          <% } else { %>
+
+            <div class="d-flex flex-column gap-4">
+
+              <% academicRecords.forEach(record => { %>
+
+                <%
+                  let gradeColor = 'success';
+
+                  if (record.average < 75) {
+                    gradeColor = 'warning';
+                  }
+
+                  if (record.average < 50) {
+                    gradeColor = 'danger';
+                  }
+                %>
+
+                <div
+                  class="border rounded-4 p-4"
+                  style="background: #f8fafc;"
+                >
+
+                  <!-- TOP -->
+                  <div class="d-flex flex-wrap justify-content-between align-items-start gap-3 mb-3">
+
+                    <div>
+
+                      <h5 class="fw-bold mb-1">
+                        <%= record.subjectName %>
+                      </h5>
+
+                      <p class="text-muted mb-0">
+
+                        <i class="fa-solid fa-chalkboard-user me-1"></i>
+
+                        <%= record.teacherName %>
+
+                      </p>
+
+                    </div>
+
+                    <span class="badge bg-<%= gradeColor %> px-3 py-2 fs-6">
+
+                      Grade:
+                      <%= record.grade.letter %>
+
+                    </span>
+
+                  </div>
+
+                  <!-- SCORES -->
+                  <div class="row g-3 mb-3">
+
+                    <div class="col-md-4">
+
+                      <div class="bg-white rounded-4 border p-3 text-center">
+
+                        <small class="text-muted d-block mb-1">
+                          Midterm
+                        </small>
+
+                        <h5 class="fw-bold mb-0">
+
+                          <%= record.midterm !== null
+                            ? record.midterm + '/100'
+                            : 'N/A'
+                          %>
+
+                        </h5>
+
+                      </div>
+
+                    </div>
+
+                    <div class="col-md-4">
+
+                      <div class="bg-white rounded-4 border p-3 text-center">
+
+                        <small class="text-muted d-block mb-1">
+                          Finals
+                        </small>
+
+                        <h5 class="fw-bold mb-0">
+
+                          <%= record.finals !== null
+                            ? record.finals + '/100'
+                            : 'N/A'
+                          %>
+
+                        </h5>
+
+                      </div>
+
+                    </div>
+
+                    <div class="col-md-4">
+
+                      <div class="bg-white rounded-4 border p-3 text-center">
+
+                        <small class="text-muted d-block mb-1">
+                          Average
+                        </small>
+
+                        <h5 class="fw-bold mb-0 text-<%= gradeColor %>">
+
+                          <%= record.average !== null
+                            ? record.average + '%'
+                            : 'N/A'
+                          %>
+
+                        </h5>
+
+                      </div>
+
+                    </div>
+
+                  </div>
+
+                  <!-- PROGRESS -->
+                  <% if (record.average !== null) { %>
+
+                    <div>
+
+                      <div class="d-flex justify-content-between mb-2">
+
+                        <small class="text-muted">
+                          Performance
+                        </small>
+
+                        <small class="fw-semibold">
+                          <%= record.average %>%
+                        </small>
+
+                      </div>
+
+                      <div
+                        class="progress rounded-pill"
+                        style="height: 12px;"
+                      >
+
+                        <div
+                          class="progress-bar bg-<%= gradeColor %>"
+                          role="progressbar"
+                          style="width: <%= record.average %>%"
+                        ></div>
+
+                      </div>
+
+                    </div>
+
+                  <% } %>
+
+                </div>
+
+              <% }) %>
+
+            </div>
+
+          <% } %>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

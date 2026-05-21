@@ -1,0 +1,402 @@
+<!-- views/admin/dashboard.ejs -->
+
+<div class="container-fluid">
+
+  <!-- Page Header -->
+  <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+
+    <div>
+
+      <h2 class="fw-bold mb-1">
+
+        <i class="fa-solid fa-gauge-high text-primary me-2"></i>
+
+        Admin Dashboard
+
+      </h2>
+
+      <p class="text-muted mb-0">
+
+        Overview of students, courses, teachers, and academic activities.
+
+      </p>
+
+    </div>
+
+    <div>
+
+      <span class="badge bg-primary px-3 py-2 rounded-pill">
+
+        Welcome Admin
+
+      </span>
+
+    </div>
+
+  </div>
+
+  <!-- KPI Cards -->
+  <div class="row g-4 mb-4">
+
+    <!-- Students -->
+    <div class="col-md-4">
+
+      <div class="card border-0 shadow-sm rounded-4 h-100">
+
+        <div class="card-body d-flex justify-content-between align-items-center p-4">
+
+          <div>
+
+            <p class="text-muted text-uppercase small fw-bold mb-2">
+
+              Total Students
+
+            </p>
+
+            <h2 class="fw-bold text-primary mb-0">
+
+              <%= stats.students %>
+
+            </h2>
+
+          </div>
+
+          <div
+            class="d-flex align-items-center justify-content-center rounded-circle bg-primary bg-opacity-10"
+            style="width: 70px; height: 70px;"
+          >
+
+            <i class="fa-solid fa-user-graduate fa-2x text-primary"></i>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Courses -->
+    <div class="col-md-4">
+
+      <div class="card border-0 shadow-sm rounded-4 h-100">
+
+        <div class="card-body d-flex justify-content-between align-items-center p-4">
+
+          <div>
+
+            <p class="text-muted text-uppercase small fw-bold mb-2">
+
+              Total Courses
+
+            </p>
+
+            <h2 class="fw-bold text-success mb-0">
+
+              <%= stats.courses %>
+
+            </h2>
+
+          </div>
+
+          <div
+            class="d-flex align-items-center justify-content-center rounded-circle bg-success bg-opacity-10"
+            style="width: 70px; height: 70px;"
+          >
+
+            <i class="fa-solid fa-book fa-2x text-success"></i>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Teachers -->
+    <div class="col-md-4">
+
+      <div class="card border-0 shadow-sm rounded-4 h-100">
+
+        <div class="card-body d-flex justify-content-between align-items-center p-4">
+
+          <div>
+
+            <p class="text-muted text-uppercase small fw-bold mb-2">
+
+              Total Teachers
+
+            </p>
+
+            <h2 class="fw-bold text-warning mb-0">
+
+              <%= stats.teachers %>
+
+            </h2>
+
+          </div>
+
+          <div
+            class="d-flex align-items-center justify-content-center rounded-circle bg-warning bg-opacity-10"
+            style="width: 70px; height: 70px;"
+          >
+
+            <i class="fa-solid fa-chalkboard-user fa-2x text-warning"></i>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Charts + Recent Students -->
+  <div class="row g-4">
+
+    <!-- Enrollment Chart -->
+    <div class="col-lg-8">
+
+      <div class="card border-0 shadow-sm rounded-4 h-100">
+
+        <div class="card-body p-4">
+
+          <div class="d-flex justify-content-between align-items-center mb-4">
+
+            <h4 class="fw-bold mb-0">
+
+              <i class="fa-solid fa-chart-column text-primary me-2"></i>
+
+              Student Enrollment Analytics
+
+            </h4>
+
+          </div>
+
+          <div style="height: 350px;">
+
+            <canvas id="enrollmentChart"></canvas>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Recent Students -->
+    <div class="col-lg-4">
+
+      <div class="card border-0 shadow-sm rounded-4 h-100">
+
+        <div class="card-body p-4">
+
+          <div class="d-flex justify-content-between align-items-center mb-4">
+
+            <h4 class="fw-bold mb-0">
+
+              <i class="fa-solid fa-user-clock text-success me-2"></i>
+
+              Recent Students
+
+            </h4>
+
+            <span class="badge bg-success rounded-pill">
+
+              <%= recentStudents.length %>
+
+            </span>
+
+          </div>
+
+          <!-- Empty -->
+          <% if (recentStudents.length === 0) { %>
+
+            <div class="text-center py-5">
+
+              <i class="fa-solid fa-user-slash fa-4x text-muted mb-3"></i>
+
+              <h5 class="text-muted">
+                No Recent Students
+              </h5>
+
+            </div>
+
+          <% } else { %>
+
+            <div class="d-flex flex-column gap-3">
+
+              <% recentStudents.forEach(student => { %>
+
+                <div class="d-flex justify-content-between align-items-center border-bottom pb-3">
+
+                  <div>
+
+                    <div class="fw-semibold">
+
+                      <%= student.name %>
+
+                    </div>
+
+                    <div class="small text-muted">
+
+                      <i class="fa-solid fa-envelope me-1"></i>
+
+                      <%= student.email %>
+
+                    </div>
+
+                  </div>
+
+                  <div>
+
+                    <% if (student.course_name) { %>
+
+                      <span class="badge bg-info text-dark">
+
+                        <%= student.course_name %>
+
+                      </span>
+
+                    <% } else { %>
+
+                      <span class="badge bg-secondary">
+
+                        General
+
+                      </span>
+
+                    <% } %>
+
+                  </div>
+
+                </div>
+
+              <% }) %>
+
+            </div>
+
+            <!-- Button -->
+            <div class="mt-4">
+
+              <a
+                href="/admin/students"
+                class="btn btn-primary w-100 rounded-pill"
+              >
+
+                Open Student Directory
+
+              </a>
+
+            </div>
+
+          <% } %>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- Chart.js -->
+<script>
+
+  document.addEventListener('DOMContentLoaded', () => {
+
+    const rawData = <%- JSON.stringify(chartData || []) %>;
+
+    const labels = rawData.map(item => item.course_code);
+
+    const counts = rawData.map(item => item.count);
+
+    const ctx = document.getElementById('enrollmentChart');
+
+    if (ctx) {
+
+      new Chart(ctx, {
+
+        type: 'bar',
+
+        data: {
+
+          labels: labels,
+
+          datasets: [{
+
+            label: 'Student Enrollment',
+
+            data: counts,
+
+            borderWidth: 2,
+
+            borderRadius: 10,
+
+            backgroundColor: [
+              'rgba(54, 162, 235, 0.7)',
+              'rgba(75, 192, 192, 0.7)',
+              'rgba(255, 206, 86, 0.7)',
+              'rgba(153, 102, 255, 0.7)',
+              'rgba(255, 99, 132, 0.7)'
+            ],
+
+            borderColor: [
+              'rgba(54, 162, 235, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 99, 132, 1)'
+            ]
+
+          }]
+
+        },
+
+        options: {
+
+          responsive: true,
+
+          maintainAspectRatio: false,
+
+          plugins: {
+
+            legend: {
+
+              display: false
+
+            }
+
+          },
+
+          scales: {
+
+            y: {
+
+              beginAtZero: true,
+
+              ticks: {
+
+                precision: 0
+
+              }
+
+            }
+
+          }
+
+        }
+
+      });
+
+    }
+
+  });
+
+</script>

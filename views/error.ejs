@@ -1,0 +1,13 @@
+<!-- views/error.ejs -->
+<div class="card text-center" style="max-width: 500px; margin: 10vh auto; padding: 3rem 2rem;">
+  <div style="font-size: 4rem; color: var(--danger); margin-bottom: 1.5rem; filter: drop-shadow(0 0 15px rgba(239,68,68,0.3));">
+    <i class="fa-solid fa-triangle-exclamation"></i>
+  </div>
+  <h2 style="margin-bottom: 1rem;"><%= title %></h2>
+  <p class="text-muted" style="margin-bottom: 2rem; font-size: 0.95rem;">
+    <%= error %>
+  </p>
+  <a href="/" class="btn btn-primary btn-pill">
+    <i class="fa-solid fa-house"></i> Return to Safety
+  </a>
+</div>

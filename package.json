@@ -1,0 +1,23 @@
+{
+  "name": "student-record-management-system",
+  "version": "1.0.0",
+  "description": "Premium Full-Stack Student Record Management System",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "ejs": "^3.1.9",
+    "express": "^4.19.2",
+    "express-ejs-layouts": "^2.5.1",
+    "express-session": "^1.18.0",
+    "sqlite3": "^5.1.7"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "author": "Antigravity Pair",
+  "license": "ISC"
+}

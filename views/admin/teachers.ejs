@@ -1,0 +1,488 @@
+<!-- views/admin/teachers.ejs -->
+
+<div class="container-fluid">
+
+  <!-- Header -->
+  <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+
+    <div>
+
+      <h2 class="fw-bold mb-1">
+        <i class="fa-solid fa-chalkboard-user text-primary me-2"></i>
+        Manage Teachers
+      </h2>
+
+      <p class="text-muted mb-0">
+        Register faculty members and assign academic subjects.
+      </p>
+
+    </div>
+
+    <a href="/admin/dashboard" class="btn btn-secondary rounded-pill">
+
+      <i class="fa-solid fa-arrow-left"></i>
+
+      Back to Dashboard
+
+    </a>
+
+  </div>
+
+  <!-- Success Alert -->
+  <% if (typeof success !== 'undefined' && success) { %>
+
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+
+      <i class="fa-solid fa-circle-check me-2"></i>
+
+      <%= success %>
+
+      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+
+    </div>
+
+  <% } %>
+
+  <!-- Error Alert -->
+  <% if (typeof error !== 'undefined' && error) { %>
+
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+
+      <i class="fa-solid fa-circle-exclamation me-2"></i>
+
+      <%= error %>
+
+      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+
+    </div>
+
+  <% } %>
+
+  <!-- Main Layout -->
+  <div class="row g-4">
+
+    <!-- LEFT SIDE -->
+    <div class="col-lg-5">
+
+      <!-- Register Teacher -->
+      <div class="card border-0 shadow-sm rounded-4 mb-4">
+
+        <div class="card-body p-4">
+
+          <h4 class="fw-bold mb-4">
+
+            <i class="fa-solid fa-user-plus text-primary me-2"></i>
+
+            Register Faculty
+
+          </h4>
+
+          <form action="/admin/teachers/add" method="POST">
+
+            <!-- Name -->
+            <div class="mb-3">
+
+              <label class="form-label fw-semibold">
+                Full Name
+              </label>
+
+              <input
+                type="text"
+                name="name"
+                class="form-control"
+                placeholder="Enter faculty full name"
+                required
+              >
+
+            </div>
+
+            <!-- Email -->
+            <div class="mb-3">
+
+              <label class="form-label fw-semibold">
+                Email Address
+              </label>
+
+              <input
+                type="email"
+                name="email"
+                class="form-control"
+                placeholder="faculty@university.edu"
+                required
+              >
+
+            </div>
+
+            <!-- Department -->
+            <div class="mb-3">
+
+              <label class="form-label fw-semibold">
+                Department
+              </label>
+
+              <input
+                type="text"
+                name="department"
+                class="form-control"
+                placeholder="Computer Science"
+                required
+              >
+
+            </div>
+
+            <!-- Username -->
+            <div class="mb-3">
+
+              <label class="form-label fw-semibold">
+                Portal Username
+              </label>
+
+              <input
+                type="text"
+                name="username"
+                class="form-control"
+                placeholder="Login username"
+                required
+              >
+
+            </div>
+
+            <!-- Password -->
+            <div class="mb-4">
+
+              <label class="form-label fw-semibold">
+                Password
+              </label>
+
+              <input
+                type="password"
+                name="password"
+                class="form-control"
+                placeholder="Create secure password"
+                required
+              >
+
+            </div>
+
+            <!-- Submit -->
+            <button type="submit" class="btn btn-primary w-100 py-2 rounded-pill fw-semibold">
+
+              Register Teacher
+
+              <i class="fa-solid fa-user-plus ms-2"></i>
+
+            </button>
+
+          </form>
+
+        </div>
+
+      </div>
+
+      <!-- Assign Subject -->
+      <div class="card border-0 shadow-sm rounded-4">
+
+        <div class="card-body p-4">
+
+          <h4 class="fw-bold mb-4">
+
+            <i class="fa-solid fa-book-bookmark text-success me-2"></i>
+
+            Assign Subject
+
+          </h4>
+
+          <form action="/admin/teachers/assign-subject" method="POST">
+
+            <!-- Teacher -->
+            <div class="mb-3">
+
+              <label class="form-label fw-semibold">
+                Select Teacher
+              </label>
+
+              <select
+                name="teacher_id"
+                class="form-select"
+                required
+              >
+
+                <option value="">
+                  Select Faculty
+                </option>
+
+                <% teachers.forEach(teacher => { %>
+
+                  <option value="<%= teacher.id %>">
+
+                    <%= teacher.name %>
+                    (
+                    <%= teacher.department %>
+                    )
+
+                  </option>
+
+                <% }) %>
+
+              </select>
+
+            </div>
+
+            <!-- Subject -->
+            <div class="mb-3">
+
+              <label class="form-label fw-semibold">
+                Subject Name
+              </label>
+
+              <input
+                type="text"
+                name="subject_name"
+                class="form-control"
+                placeholder="e.g. Data Structures"
+                required
+              >
+
+            </div>
+
+            <!-- Course -->
+            <div class="mb-4">
+
+              <label class="form-label fw-semibold">
+                Assigned Course
+              </label>
+
+              <select
+                name="course_id"
+                class="form-select"
+                required
+              >
+
+                <option value="">
+                  Select Course
+                </option>
+
+                <% courses.forEach(course => { %>
+
+                  <option value="<%= course.id %>">
+
+                    <%= course.course_name %>
+                    (
+                    <%= course.course_code %>
+                    )
+
+                  </option>
+
+                <% }) %>
+
+              </select>
+
+            </div>
+
+            <!-- Submit -->
+            <button type="submit" class="btn btn-success w-100 py-2 rounded-pill fw-semibold">
+
+              Assign Subject
+
+              <i class="fa-solid fa-circle-check ms-2"></i>
+
+            </button>
+
+          </form>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- RIGHT SIDE -->
+    <div class="col-lg-7">
+
+      <div class="card border-0 shadow-sm rounded-4">
+
+        <div class="card-body p-4">
+
+          <!-- Title -->
+          <div class="d-flex justify-content-between align-items-center mb-4">
+
+            <h4 class="fw-bold mb-0">
+
+              <i class="fa-solid fa-users text-warning me-2"></i>
+
+              Faculty Directory
+
+            </h4>
+
+            <span class="badge bg-primary rounded-pill px-3 py-2">
+
+              <%= teachers.length %> Teachers
+
+            </span>
+
+          </div>
+
+          <!-- Empty -->
+          <% if (teachers.length === 0) { %>
+
+            <div class="text-center py-5">
+
+              <i class="fa-solid fa-user-slash fa-4x text-muted mb-3"></i>
+
+              <h5 class="text-muted">
+                No Teachers Found
+              </h5>
+
+              <p class="text-muted">
+                Faculty members will appear here after registration.
+              </p>
+
+            </div>
+
+          <% } else { %>
+
+            <!-- Table -->
+            <div class="table-responsive">
+
+              <table class="table table-hover align-middle">
+
+                <thead class="table-light">
+
+                  <tr>
+
+                    <th>
+                      Teacher Details
+                    </th>
+
+                    <th>
+                      Department
+                    </th>
+
+                    <th>
+                      Assigned Subjects
+                    </th>
+
+                    <th class="text-end">
+                      Action
+                    </th>
+
+                  </tr>
+
+                </thead>
+
+                <tbody>
+
+                  <% teachers.forEach(teacher => { %>
+
+                    <tr>
+
+                      <!-- Teacher Info -->
+                      <td>
+
+                        <div class="fw-semibold">
+
+                          <%= teacher.name %>
+
+                        </div>
+
+                        <div class="small text-muted">
+
+                          <i class="fa-solid fa-envelope"></i>
+
+                          <%= teacher.email %>
+
+                        </div>
+
+                        <div class="small mt-1">
+
+                          <span class="badge bg-dark">
+
+                            <i class="fa-solid fa-user"></i>
+
+                            <%= teacher.username %>
+
+                          </span>
+
+                        </div>
+
+                      </td>
+
+                      <!-- Department -->
+                      <td>
+
+                        <span class="badge bg-secondary">
+
+                          <%= teacher.department %>
+
+                        </span>
+
+                      </td>
+
+                      <!-- Subjects -->
+                      <td>
+
+                        <% if (teacher.subjects) { %>
+
+                          <% teacher.subjects.split(', ').forEach(subject => { %>
+
+                            <span class="badge bg-info text-dark me-1 mb-1">
+
+                              <%= subject %>
+
+                            </span>
+
+                          <% }) %>
+
+                        <% } else { %>
+
+                          <span class="text-muted">
+                            No Subject Assigned
+                          </span>
+
+                        <% } %>
+
+                      </td>
+
+                      <!-- Delete -->
+                      <td class="text-end">
+
+                        <form
+                          action="/admin/teachers/delete/<%= teacher.id %>"
+                          method="POST"
+                          onsubmit="return confirm('Are you sure you want to remove this teacher?');"
+                        >
+
+                          <button
+                            type="submit"
+                            class="btn btn-danger btn-sm rounded-pill"
+                          >
+
+                            <i class="fa-solid fa-trash"></i>
+
+                          </button>
+
+                        </form>
+
+                      </td>
+
+                    </tr>
+
+                  <% }) %>
+
+                </tbody>
+
+              </table>
+
+            </div>
+
+          <% } %>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

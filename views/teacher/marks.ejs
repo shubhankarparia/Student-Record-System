@@ -1,0 +1,249 @@
+<!-- views/teacher/marks.ejs -->
+
+<div class="page-header">
+  <div>
+    <h2 class="page-title">
+      <i class="fa-solid fa-file-pen text-success"></i>
+      Gradebook Management
+    </h2>
+
+    <p class="page-subtitle">
+      Subject:
+      <span class="text-primary fw-semibold">
+        <%= subject.subject_name %>
+      </span>
+    </p>
+  </div>
+
+  <a href="/teacher/dashboard" class="btn btn-outline-secondary btn-pill">
+    <i class="fa-solid fa-arrow-left"></i>
+    Back
+  </a>
+</div>
+
+<!-- SUCCESS MESSAGE -->
+<% if (success) { %>
+  <div class="alert alert-success">
+    <i class="fa-solid fa-circle-check"></i>
+    <span><%= success %></span>
+  </div>
+<% } %>
+
+<!-- ERROR MESSAGE -->
+<% if (error) { %>
+  <div class="alert alert-danger">
+    <i class="fa-solid fa-circle-exclamation"></i>
+    <span><%= error %></span>
+  </div>
+<% } %>
+
+<!-- MAIN CARD -->
+<div class="card shadow-sm border-0 rounded-4">
+
+  <div class="card-body p-4">
+
+    <!-- TOP SECTION -->
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+
+      <div>
+        <h4 class="fw-bold mb-1">
+          <i class="fa-solid fa-graduation-cap text-primary"></i>
+          Student Gradebook
+        </h4>
+
+        <p class="text-muted mb-0 small">
+          Enter marks out of 100 for Midterm and Final examinations.
+        </p>
+      </div>
+
+      <div class="badge bg-primary-subtle text-primary px-3 py-2 rounded-pill">
+        Total Students:
+        <strong><%= students.length %></strong>
+      </div>
+
+    </div>
+
+    <!-- FORM -->
+    <form action="/teacher/marks/<%= subject.id %>" method="POST">
+
+      <% if (students.length === 0) { %>
+
+        <!-- EMPTY STATE -->
+        <div class="text-center py-5">
+
+          <i class="fa-solid fa-user-xmark fa-4x text-muted mb-3"></i>
+
+          <h4 class="fw-bold">
+            No Students Available
+          </h4>
+
+          <p class="text-muted">
+            No students are currently enrolled in this course.
+          </p>
+
+        </div>
+
+      <% } else { %>
+
+        <!-- TABLE -->
+        <div class="table-responsive">
+
+          <table class="table align-middle table-hover">
+
+            <thead class="table-light">
+
+              <tr>
+                <th style="min-width: 250px;">
+                  Student Details
+                </th>
+
+                <th class="text-center">
+                  Midterm Marks
+                </th>
+
+                <th class="text-center">
+                  Final Marks
+                </th>
+
+                <th class="text-center">
+                  Average
+                </th>
+              </tr>
+
+            </thead>
+
+            <tbody>
+
+              <% students.forEach(s => { %>
+
+                <% 
+                  const midScore =
+                    marksMap[s.id] &&
+                    marksMap[s.id]['Midterm'] !== undefined
+                      ? marksMap[s.id]['Midterm']
+                      : '';
+
+                  const finScore =
+                    marksMap[s.id] &&
+                    marksMap[s.id]['Finals'] !== undefined
+                      ? marksMap[s.id]['Finals']
+                      : '';
+
+                  let avg = '';
+
+                  if (midScore !== '' && finScore !== '') {
+                    avg = ((parseFloat(midScore) + parseFloat(finScore)) / 2).toFixed(1);
+                  }
+                %>
+
+                <tr>
+
+                  <!-- STUDENT INFO -->
+                  <td>
+
+                    <div class="fw-semibold">
+                      <%= s.name %>
+                    </div>
+
+                    <div class="text-muted small">
+                      <i class="fa-solid fa-envelope"></i>
+                      <%= s.email %>
+                    </div>
+
+                  </td>
+
+                  <!-- MIDTERM -->
+                  <td class="text-center">
+
+                    <input
+                      type="number"
+                      step="0.1"
+                      min="0"
+                      max="100"
+                      name="midterm[<%= s.id %>]"
+                      class="form-control text-center mx-auto"
+                      value="<%= midScore %>"
+                      placeholder="0-100"
+                      style="max-width: 120px;"
+                    >
+
+                  </td>
+
+                  <!-- FINALS -->
+                  <td class="text-center">
+
+                    <input
+                      type="number"
+                      step="0.1"
+                      min="0"
+                      max="100"
+                      name="finals[<%= s.id %>]"
+                      class="form-control text-center mx-auto"
+                      value="<%= finScore %>"
+                      placeholder="0-100"
+                      style="max-width: 120px;"
+                    >
+
+                  </td>
+
+                  <!-- AVERAGE -->
+                  <td class="text-center">
+
+                    <% if (avg !== '') { %>
+
+                      <% 
+                        let badgeClass = 'bg-success';
+
+                        if (avg < 75) badgeClass = 'bg-warning text-dark';
+                        if (avg < 50) badgeClass = 'bg-danger';
+                      %>
+
+                      <span class="badge <%= badgeClass %> px-3 py-2 rounded-pill">
+
+                        <%= avg %>%
+
+                      </span>
+
+                    <% } else { %>
+
+                      <span class="text-muted small">
+                        N/A
+                      </span>
+
+                    <% } %>
+
+                  </td>
+
+                </tr>
+
+              <% }) %>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+        <!-- SUBMIT -->
+        <div class="mt-4">
+
+          <button
+            type="submit"
+            class="btn btn-primary btn-lg w-100 rounded-pill"
+          >
+
+            <i class="fa-solid fa-floppy-disk me-2"></i>
+
+            Save Gradebook Records
+
+          </button>
+
+        </div>
+
+      <% } %>
+
+    </form>
+
+  </div>
+
+</div>

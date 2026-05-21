@@ -1,0 +1,384 @@
+<!-- views/login.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login | Student Record System</title>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #4f46e5, #7c3aed);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      overflow-x: hidden;
+    }
+
+    .login-card {
+      width: 100%;
+      max-width: 430px;
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(14px);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 25px;
+      padding: 40px 35px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.25);
+      animation: fadeIn 0.8s ease;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(25px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .login-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .login-logo {
+      width: 85px;
+      height: 85px;
+      margin: 0 auto 15px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-size: 2rem;
+      box-shadow: 0 4px 20px rgba(99,102,241,0.4);
+    }
+
+    .login-header h2 {
+      color: white;
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+
+    .login-header p {
+      color: rgba(255,255,255,0.8);
+      font-size: 0.9rem;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-label {
+      color: white;
+      margin-bottom: 8px;
+      font-weight: 500;
+      display: block;
+    }
+
+    .input-group {
+      position: relative;
+    }
+
+    .input-icon {
+      position: absolute;
+      top: 50%;
+      left: 16px;
+      transform: translateY(-50%);
+      color: #6b7280;
+      z-index: 10;
+    }
+
+    .form-control {
+      width: 100%;
+      height: 52px;
+      padding-left: 48px;
+      padding-right: 48px;
+      border-radius: 14px;
+      border: none;
+      outline: none;
+      background: rgba(255,255,255,0.95);
+      transition: 0.3s;
+      font-size: 0.95rem;
+    }
+
+    .form-control:focus {
+      box-shadow: 0 0 0 4px rgba(99,102,241,0.25);
+    }
+
+    .password-toggle {
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      border: none;
+      background: transparent;
+      color: #6b7280;
+      cursor: pointer;
+      z-index: 10;
+    }
+
+    .btn-primary {
+      width: 100%;
+      height: 52px;
+      border: none;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      color: white;
+      font-size: 1rem;
+      font-weight: 600;
+      transition: 0.3s;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(99,102,241,0.4);
+    }
+
+    .alert {
+      border-radius: 12px;
+      padding: 12px 16px;
+      margin-bottom: 20px;
+      font-size: 0.9rem;
+    }
+
+    .demo-accounts {
+      margin-top: 30px;
+      text-align: center;
+    }
+
+    .demo-title {
+      color: rgba(255,255,255,0.85);
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      letter-spacing: 1px;
+      font-weight: 600;
+    }
+
+    .demo-badge {
+      display: inline-block;
+      margin: 5px;
+      padding: 10px 14px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.18);
+      color: white;
+      cursor: pointer;
+      transition: 0.3s;
+      font-size: 0.85rem;
+      font-weight: 500;
+      border: 1px solid rgba(255,255,255,0.15);
+    }
+
+    .demo-badge:hover {
+      background: rgba(255,255,255,0.28);
+      transform: translateY(-2px);
+    }
+
+    .forgot-link {
+      text-align: center;
+      margin-top: 15px;
+    }
+
+    .forgot-link a {
+      color: rgba(255,255,255,0.85);
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+
+    .forgot-link a:hover {
+      color: white;
+      text-decoration: underline;
+    }
+
+    .footer-text {
+      margin-top: 25px;
+      text-align: center;
+      color: rgba(255,255,255,0.7);
+      font-size: 0.8rem;
+    }
+
+    @media (max-width: 500px) {
+      .login-card {
+        padding: 30px 25px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="login-card">
+
+    <!-- Header -->
+    <div class="login-header">
+      <div class="login-logo">
+        <i class="fa-solid fa-graduation-cap"></i>
+      </div>
+
+      <h2>Welcome Back</h2>
+
+      <p>
+        Student Record Management System
+      </p>
+    </div>
+
+    <!-- Error Message -->
+    <% if (typeof error !== 'undefined' && error) { %>
+      <div class="alert alert-danger">
+        <i class="fa-solid fa-circle-exclamation"></i>
+        <%= error %>
+      </div>
+    <% } %>
+
+    <!-- Login Form -->
+    <form action="/login" method="POST">
+
+      <!-- Username -->
+      <div class="form-group">
+        <label class="form-label">Username</label>
+
+        <div class="input-group">
+          <i class="fa-solid fa-user input-icon"></i>
+
+          <input
+            type="text"
+            id="username"
+            name="username"
+            class="form-control"
+            placeholder="Enter username"
+            required
+            autofocus
+          >
+        </div>
+      </div>
+
+      <!-- Password -->
+      <div class="form-group">
+        <label class="form-label">Password</label>
+
+        <div class="input-group">
+          <i class="fa-solid fa-lock input-icon"></i>
+
+          <input
+            type="password"
+            id="password"
+            name="password"
+            class="form-control"
+            placeholder="Enter password"
+            required
+          >
+
+          <button type="button" class="password-toggle" onclick="togglePassword()">
+            <i class="fa-solid fa-eye" id="eyeIcon"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <button type="submit" class="btn-primary" id="loginBtn">
+        <span id="btnText">
+          Sign In <i class="fa-solid fa-right-to-bracket"></i>
+        </span>
+      </button>
+
+    </form>
+
+    <!-- Forgot Password -->
+    <div class="forgot-link">
+      <a href="#">Forgot Password?</a>
+    </div>
+
+    <!-- Demo Accounts -->
+    <div class="demo-accounts">
+
+      <div class="demo-title">
+        Demo Accounts
+      </div>
+
+      <div class="demo-badge" onclick="fillCredentials('admin', 'admin123')">
+        <i class="fa-solid fa-user-shield"></i>
+        Admin
+      </div>
+
+      <div class="demo-badge" onclick="fillCredentials('teacher1', 'teacher123')">
+        <i class="fa-solid fa-chalkboard-user"></i>
+        Teacher
+      </div>
+
+      <div class="demo-badge" onclick="fillCredentials('student1', 'student123')">
+        <i class="fa-solid fa-user-graduate"></i>
+        Student
+      </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="footer-text">
+      © 2026 Student Record System
+    </div>
+
+  </div>
+
+  <!-- Scripts -->
+  <script>
+
+    function fillCredentials(user, pass) {
+      document.getElementById('username').value = user;
+      document.getElementById('password').value = pass;
+
+      const btn = document.querySelector('.btn-primary');
+
+      btn.style.boxShadow = '0 0 20px rgba(255,255,255,0.6)';
+
+      setTimeout(() => {
+        btn.style.boxShadow = '';
+      }, 700);
+    }
+
+    function togglePassword() {
+      const password = document.getElementById('password');
+      const eyeIcon = document.getElementById('eyeIcon');
+
+      if (password.type === 'password') {
+        password.type = 'text';
+        eyeIcon.classList.remove('fa-eye');
+        eyeIcon.classList.add('fa-eye-slash');
+      } else {
+        password.type = 'password';
+        eyeIcon.classList.remove('fa-eye-slash');
+        eyeIcon.classList.add('fa-eye');
+      }
+    }
+
+    document.querySelector('form').addEventListener('submit', () => {
+      document.getElementById('btnText').innerHTML =
+        '<i class="fa-solid fa-spinner fa-spin"></i> Signing In...';
+    });
+
+  </script>
+
+</body>
+</html>

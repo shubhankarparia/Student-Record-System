@@ -1,0 +1,53 @@
+<div style="margin-bottom: 2rem;">
+  <h2>
+    <i class="fa-solid fa-file-pen text-success"></i>
+    Marks Management
+  </h2>
+
+  <p class="text-muted">
+    Select a subject to manage marks.
+  </p>
+</div>
+
+<% if (subjects.length === 0) { %>
+
+  <div class="card text-center" style="padding: 4rem;">
+    <i class="fa-solid fa-folder-open fa-3x text-muted"></i>
+
+    <h3 style="margin-top: 1rem;">
+      No Subjects Assigned
+    </h3>
+  </div>
+
+<% } else { %>
+
+  <div class="grid-3">
+
+    <% subjects.forEach(sub => { %>
+
+      <div class="card card-success">
+
+        <span class="badge badge-info">
+          <%= sub.course_name %>
+        </span>
+
+        <h3 style="margin-top: 1rem;">
+          <%= sub.subject_name %>
+        </h3>
+
+        <a href="/teacher/marks/<%= sub.id %>"
+           class="btn btn-success btn-pill"
+           style="margin-top: 1.5rem;">
+
+          <i class="fa-solid fa-file-pen"></i>
+          Open Gradebook
+
+        </a>
+
+      </div>
+
+    <% }) %>
+
+  </div>
+
+<% } %>
